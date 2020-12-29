@@ -1,10 +1,10 @@
-# Project : educational data analysis
+# Project : building a health app
 
 
 
 ## Project overview
 
-* This project consists of evaluating the feasibility of an app that would return the nutriscore label from given features of a food product.  It consists of a supervised multi-label classification task.
+* This project consists of evaluating the feasibility of an app that would return the nutriscore label from given features of a food product. It consists of a supervised multi-label classification task.
 
 * The overall performance of the trained estimators is significantly positive and confirms the feasibility of such an app.<p>&nbsp;</p>
 
