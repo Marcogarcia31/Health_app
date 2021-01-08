@@ -45,7 +45,7 @@
 * Scipy
 * Category_encoders
 
-* the data is **directly available** [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
+* the data is hosted in **Data.zip** or **directly available** [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
 
 * the **cleaned** data ready for **exploration and modelling** is available in the project repository under the name exploration_data.csv and may be read directly by the **modelling notebook**
 <p>&nbsp;</p>
@@ -221,24 +221,24 @@ Duplicated IDs values are aggregated:
 ![](Images/dist_control.png)<p>&nbsp;</p>
 
 
-* The distributions before and after imputation are pretty much the same and are consistent with the performance of our model
+* The **distributions before and after imputation** are pretty much the same and are **consistent** with the performance of our model
 
-* The idea here is to avoid introducing some bias in the distributions.
+* The idea here is to **avoid introducing some bias** in the distributions
 
 
 **Fibers**
 
 
-* Fibers has approximatively 40% of NAns
-* As with 'pnns', we will try here to implement a model to predict missing values.
-* The estimator will be RandomForest
+* Fibers has approximatively **40% of NAns**
+* As with 'pnns', we will try here to **implement a model to predict missing values**
+* The estimator will be **RandomForest**
 
 
 ![](Images/rf_vs_dummy.png)<p>&nbsp;</p>
 
 
-RandomForest reaches an r2 score of almost 0.7 on our test set, which is very satisfying here. 
-We will therefore impute fiber missing values with this model.
+* RandomForest reaches an **r2 score of almost 0.7** on our test set, which is very satisfying here
+* We will therefore **impute fiber missing values** with this model.
 
 
 
@@ -251,29 +251,29 @@ We will therefore impute fiber missing values with this model.
 
 ### Exploration
 
-Now that the cleaning has been done, we will produce some visualizations to get insights about the target and the features before modelling.
+Now that the **cleaning has been done**, we will produce some **visualizations** to get insights about the target and the features before modelling
 
 
 ![](Images/target_distrib.png)<p>&nbsp;</p>
 
 
-Globally the distribution of the target labels can be considerered as unbalanced, considering  d class is overrepresented.
+* Globally the distribution of the target labels can be considerered as **unbalanced**, considering *d* class is overrepresented.
 
-However the distribution between other classes is fairly balanced, and there is no minority class with very few samples.
+* However the **distribution among other classes is fairly balanced**, and there is **no minority class** with very few samples
 
-Over or undersampling prior to classification will not be needed here.<p>&nbsp;</p>
+* Over or undersampling prior to classification will not be needed here<p>&nbsp;</p>
 
 
 #### **Is nutriscore a good health indicator?**<p>&nbsp;</p>
 
-Before building a classifier we should check whether nutriscore may be considered a good health indicator. 
+Before building a **classifier** we should check whether ***nutriscore*** may be considered a **good health indicator**. 
 
 To answer this question : 
 
 - we will test correlation between target and:
-    - fibers (healthy)
-    - saturated fat & sugars (not healthy)
-    - correlation coefficient should be opposite
+    - **fibers** (healthy)
+    - **saturated fat** & **sugars** (not healthy)
+    - **correlation** coefficients should be **opposite**
 
 
 Two statistical tests could help us :
@@ -289,12 +289,12 @@ We may then apply a Shapiro normality test to test whether our distributions are
 
 
 
-Since distributions are not Gaussian we will take Spearman test between nutriscore and : 
-- fibers
-- saturated fat
-- sugars
+Since distributions are not Gaussian we will take **Spearman** test between nutriscore and : 
+- **fibers**
+- **saturated fat**
+- **sugars**
 
-Assuming that fibers are good for health whereas saturated fat & sugars are bad, the correlation coefficient sign should be the opposite for fibers vs the rest.
+* Assuming that **fibers are good for health** whereas **saturated fat & sugars are bad**, the correlation coefficient sign should be the **opposite** for fibers vs the rest.
 
 
 ![](Images/spearmanr_fiber.png)<p>&nbsp;</p>
@@ -310,14 +310,15 @@ Assuming that fibers are good for health whereas saturated fat & sugars are bad,
 ![](Images/bivariate_analysis.png)<p>&nbsp;</p>
 
 
-* The boxplots suggest that there is a dependency between the target and some of the features.
-Products with 'e' grade tend to have higher quantities of saturated fat or sugars which is consistent with the correlation test done above.
+* The boxplots suggest that there is a **dependency between the target and some of the features**
 
-* Since more than one feature seems to have predictive power, we must ensure they are not redundant, so each will help improve the model performance.
+* Products with ***e*** grade tend to have **higher quantities of saturated fat or sugars** which is consistent with the correlation test done above
 
-* One way is to visualize and interpret linear correlation between features with both PCA and correlation matrix.
+* Since **more than one feature seems to have predictive power**, we must ensure they are not **redundant**, so each will help improve the model performance
 
-* Pearson correlation as well as PCA assume Gaussian distribution which is not the case here. However, applying these tools here may help us to get better insight of our data.<p>&nbsp;</p>
+* One way is to visualize and interpret linear correlation between features with both **PCA** and **correlation matrix**
+
+* **Pearson correlation** as well as **PCA** assume Gaussian distribution which is not the case here. However, applying these tools here may help us to get **better insight of our data**.<p>&nbsp;</p>
 
 
 #### **PCA**
@@ -326,14 +327,14 @@ Products with 'e' grade tend to have higher quantities of saturated fat or sugar
 
 
 
-The variables best represented on the first axis are the amount of energy and saturated fat (higher coefficients). 
+The variables best represented on the first axis are the amount of **energy** and **saturated fat** (higher coefficients). 
 
 Axis 1 : 
-- saturated fat & energy explain most of the variance of the samples (higher coefficients on axis)
-- the direction of both features is likely the same which suggests positive linear correlation between these features
+- **saturated fat & energy** explain most of the **variance of the samples** (higher coefficients on axis)
+- the direction of both features is likely the same which suggests **positive linear correlation between these features**
 
 
-The most contributing variables to axis 2 are 'proteins' and 'sugars'. The arrows point in the opposite direction this time and seem to show a negative correlation between these two variables. This is confirmed by the correlation coefficient between the two variables, equal to -0.29.<p>&nbsp;</p>
+* The **most contributing** variables to axis 2 are **proteins and sugars**. The arrows point in the opposite direction this time and seem to show a **negative correlation** between these two variables. This is confirmed by the correlation coefficient between the two variables, equal to -0.29<p>&nbsp;</p>
 
 
 
@@ -341,11 +342,13 @@ The most contributing variables to axis 2 are 'proteins' and 'sugars'. The arrow
 
 
 
-- estimator : now that nutriscore has proven to be a reliable indicator, we will train an optimized kNN classifier that returns the target based on the amounts of each nutrient present in the product. The goal here is to evaluate the feasibility of an app that would return nutriscore.
+- **estimator** : now that ***nutriscore*** has proven to be a reliable indicator of the **quality of the food**, we will train an optimized **kNN classifier** that returns the target based on the **amounts of each nutrient** present in the product
 
 
 
-- metric : we will use accuracy (percentage of correct predictions) as evaluation metric for the optimization and the comparison with a dummy model. Since the distribution of the target is fairly balanced and there is no priority to focus on certain classes accuracy is a good choice. 
+- **metric** : 
+  * we will use **accuracy** (percentage of correct predictions) as **evaluation metric** for the optimization and the comparison with a **dummy model**
+  * since the **distribution of the target is fairly balanced** and there is no priority to focus on certain classes **accuracy is a good choice** 
 
 
 
@@ -357,11 +360,11 @@ The most contributing variables to axis 2 are 'proteins' and 'sugars'. The arrow
 
 
 
-The optimal n_neighbors parameter found by Grid is k = 5, with an accuracy score ~ 0.85.
+* The optimal n_neighbors parameter found by Grid is **k = 5**, with an **accuracy score ~ 0.85**
 
-kNN's performance is very superior to the DummyClassifier and consistent accross folds.
+* **kNN's performance is very superior to the DummyClassifier** and consistent accross folds
 
-The features considered here are relevant here and enable training a robust classifier.<p>&nbsp;</p>
+* The **features** considered here are **relevant** here and enable training a **robust classifier**<p>&nbsp;</p>
 
 
 #### **Predictions on test set**
@@ -369,7 +372,8 @@ The features considered here are relevant here and enable training a robust clas
 ![](Images/accuracy_test.png)<p>&nbsp;</p>
 
 
-Performance on test set generalizes very well. Accuracy score on the test set is pretty much equal to the mean score on validation folds on the train set.
+* **Performance** on test set **generalizes very well** 
+* **Accuracy score** on the test set is pretty **much equal to the mean score** on validation folds on the train set.
 
 Let's see the confusion matrix to get better insights on predictions per class.<p>&nbsp;</p>
 
@@ -380,26 +384,24 @@ Let's see the confusion matrix to get better insights on predictions per class.<
 
 
 
-The confusion matrix confirms visually the overall performance of the model. 
-All classes seem to be predicted accurately. 
+* The confusion matrix confirms visually the **overall performance** of the model. **All classes** seem to be **predicted accurately**. 
 
-Further analysis shows that better predicted classes are extreme classes A, D and E.
+* Further analysis shows that better predicted classes are extreme classes **A, D and E**.
 For E label we get recall = 0.9 and precision = 0.91.
 
-Least performing classes are B and C.<p>&nbsp;</p>
+* Least performing classes are B and C.<p>&nbsp;</p>
 
 
 # Conclusion
 
 
-* Our project of application is feasible. The good performance of the knn model confirms that we have the features necessary to train an accurate classifier.
+* Our project of application is **feasible**. The **good performance of the knn model** confirms that we have the **features** necessary to train an accurate classifier.
 
 
-* Beyond the overall performance of 85%, the model is efficient because the risk of a glaring error, i.e. of attributing a rating to a product that is quite far from its actual rating, is low.
+* Beyond the overall performance of 85%, **the model is efficient** because the risk of a glaring error, i.e. of attributing a rating to a product that is quite far from its actual rating, is low.
 
 
-* Further research could try to include new features such as vegetables quantity in food.
-Also other estimators could be trained to improve the performance of the predictions.<p>&nbsp;</p>
+* Further research could try to **include new features such as vegetables** quantity in food. Also **other estimators** could be trained to **improve** the performance of the predictions.<p>&nbsp;</p>
 
 
 
