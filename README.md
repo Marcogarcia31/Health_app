@@ -45,7 +45,7 @@
 * Scipy
 * Category_encoders
 
-* the data is hosted in **Data.zip** or **directly available** [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
+* the data is **directly available** [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
 
 * the **cleaned** data ready for **exploration and modelling** is available in the project repository under the name exploration_data.csv and may be read directly by the **modelling notebook**
 <p>&nbsp;</p>
@@ -401,7 +401,7 @@ For E label we get recall = 0.9 and precision = 0.91.
 * Beyond the overall performance of 85%, **the model is efficient** because the risk of a glaring error, i.e. of attributing a rating to a product that is quite far from its actual rating, is low.
 
 
-* Further research could try to **include new features such as vegetables** quantity in food. Also **other estimators** could be trained to **improve** the performance of the predictions.<p>&nbsp;</p>
+* Further research could  food. Also **other estimators** could be trained to **improve** the performance of the predictions.<p>&nbsp;</p>
 
 
 
