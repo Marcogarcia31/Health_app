@@ -2,25 +2,28 @@
 
 
 
-## Project overview
+## Project overview<p>&nbsp;</p>
 
-* This project consists of evaluating the feasibility of an app that would return the nutriscore label from given features of a food product. It consists of a supervised multi-label classification task.
+* this project consists of evaluating the **feasibility of an app** that would return the ***nutriscore*** label from given features of a food product
 
-* The overall performance of the trained estimators is significantly positive and confirms the feasibility of such an app.<p>&nbsp;</p>
+* thus the project consists of a  **multi-label classification** task with **tabular data**
+
+* the overall performance of the trained **estimator** is **positive**  and confirms the feasibility of such an app<p>&nbsp;</p><p>&nbsp;</p>
 
 
 
 ## Workflow summary 	
 
-* cleaned the product-related data from Open Food Facts database
 
-* explored the data
+* **cleaned** the product-related data from Open Food Facts [database](https://world.openfoodfacts.org/data)
 
-* imputed missing values of relevant features with trained models on non-missing values
+* selected **relevant** features
 
-* realized statistical tests to figure whether nutriscore is a reliable indicator
+* **imputed** missing values of relevant features with **models**
 
-* trained k-Nearest Neighbors classifier and predicted labels on test set <p>&nbsp;</p>
+* realized **statistical tests** to figure whether ***nutriscore*** is a **reliable indicator** of the quality of food
+
+* trained **k-Nearest Neighbors** classifier and predicted labels on test set
 
   
 
@@ -30,11 +33,21 @@
 
 ## Project installation
 
-* use command pip install -r requirements.txt to install the dependencies
+### Dependencies
 
-* the data is directly available [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
+* Pandas
+* Numpy
+* Re
+* Missingno 
+* MatplotLib
+* Seaborn
+* Scikit-learn
+* Scipy
+* Category_encoders
 
-* the cleaned data ready for exploration and modelling is available in the project repository under the name exploration_data.csv and may be read directly by the modelling notebook
+* the data is **directly available** [here](https://static.openfoodfacts.org/data/en.openfoodfacts.org.products.csv).  The csv file should be stored in a folder named Data to reproduce code in the cleaning notebook
+
+* the **cleaned** data ready for **exploration and modelling** is available in the project repository under the name exploration_data.csv and may be read directly by the **modelling notebook**
 <p>&nbsp;</p>
 
 
@@ -51,15 +64,15 @@
 ### Defining the project
 
 
-This dataset contains information about food products.
+This dataset contains information about **food products**.
 
 * It contains:
     - labels
-    - features : nutrients...
+    - features : **nutrients**...
 
-* The main goal of the project is to evaluate the feasibility of an application that would inform the consumer about the nutritional quality of a product
+* The main goal of the project is to evaluate the **feasibility of an application** that would inform the consumer about the **nutritional** quality of a product
 
-* This implies to train an underlying ML model that would predict nutriscore labels. The task here is a multilabel classification supervised task.
+* This implies to train an underlying ML model that would predict ***nutriscore*** labels. The task here is a multilabel classification supervised task.
 
 We will now clean the data as a first step
 
@@ -72,7 +85,7 @@ We will now clean the data as a first step
 
 ![](Images/target_missing_val.png)<p>&nbsp;</p>
 
-Target features have almost 60% of Nans.
+Target features have almost **60%** of Nans.
 
 
 #### **Feature selection**
@@ -81,15 +94,15 @@ Target features have almost 60% of Nans.
 After this first cleaning step, we will now select the **relevant features** for our task.
 
 
-We will focus on nutrients, which are the features most likely to impact nutriscore : 
-  - the amount of energy in kcal
-  - the quantity of saturated fats
-  - the quantity of protein
-  - the quantity of sugars
-  - the amount of fibre
-  - the quantity of salt
-  - the quantity of fruit, vegetables, nuts
-  - the category: solid or drink
+We will focus on nutrients, which are the features most likely to impact ***nutriscore*** : 
+  - the amount of **energy** in kcal
+  - the quantity of **saturated fats**
+  - the quantity of **protein**
+  - the quantity of **sugars**
+  - the amount of **fibers**
+  - the quantity of **salt**
+  - the quantity of **fruit, vegetables, nuts**
+  - the category: **food** or **beverage**
 
 
 
@@ -102,12 +115,12 @@ We will focus on nutrients, which are the features most likely to impact nutrisc
 We see that some of these variables have extremely satisfactory fill rates, close to 100%. 
                 
 For variables that have missing values : 
-- fibers: we will figure a way of imputing missing values
-- vegetables & nuts : with 98% of NANs, we have no choice but to discard the feature
+- **fibers**: we will figure a way of **imputing missing values**
+- **vegetables & nuts** : with **98%** of NANs, we have no choice but to discard the feature
 
 
 Redundant features : 
-- energy & energy kcal : we'll keep the most fulfilled feature
+- **energy** & energy kcal : we'll keep the most fulfilled feature
 
 
 #### **Missing values by sample**
@@ -127,30 +140,30 @@ Some products have missing values on many features. We should delete them to avo
 ![](Images/outliers.png)<p>&nbsp;</p>
 
 
-We can see from the table above that some values in the dataset are outliers. 
-The maximums in the columns 'proteins', 'sugars', 'salt', 'saturated fats' and 'fibre' are impossible, as they are higher than 100g.
+* We can see from the table above that some values in the dataset are **outliers**
 
-Also some minimums are negative and therefore inconsistent: those in the columns 'proteins', 'sugars' and 'fibre'. 
+* The maximums in the columns 'proteins', 'sugars', 'salt', 'saturated fats' and 'fibers' are impossible, as they are **higher than 100g**
+* Also some **minima** are negative and therefore inconsistent: those in the columns 'proteins', 'sugars' and 'fibre'. 
 
 We can apply the following cleaning principle: 
 
-- the sum of the nutrients should logically not exceed 100g per 100g of product
+- **the sum of the nutrients should logically not exceed 100g per 100g of product**
 
 
-- similarly, the current state of scientific knowledge allows us to admit that the most caloric nutrient is fat, and that one gram of fat represents 9 kcal, or 37.6 kJ. We can therefore consider that a product should logically contain no more than 3,760 kJ of energy
+- similarly, the current state of scientific knowledge allows us to admit that the most caloric nutrient is fat, and that one gram of fat represents 9 kcal, or 37.6 kJ. **We can therefore consider that a product should logically contain no more than 3,760 kJ of energy**
 
 
-- we should not see a value below zero for the different nutrients 
+- we should not see a **value below zero** for the different nutrients 
 
 
-- product should meet the following condition : kJ >= 37,6 * fats + 16,7 * sugars + 16,7 * proteins + 8,4 * fibers
+- product should meet the following condition : **kJ >= 37,6 * fats + 16,7 * sugars + 16,7 * proteins + 8,4 * fibers**
 
 
 
 ![](Images/cleaned_data.png)<p>&nbsp;</p>
 
 
-Even thoughh there are statistical outliers in the distributions, maximum value on each feature does not exceed 100g which is reasonable. 
+Even though there are statistical outliers in the distributions, maximum value on each feature does not exceed 100g which is reasonable. 
 
 
 
@@ -161,8 +174,8 @@ Even thoughh there are statistical outliers in the distributions, maximum value 
 
 
 Duplicated IDs values are aggregated:
-- by median for quantitative features
-- by most frequent for categorical ones
+- by **median** for quantitative features
+- by **most frequent** for categorical ones
 
 
 
@@ -173,16 +186,22 @@ Duplicated IDs values are aggregated:
 ![](Images/cat_distrib.png)<p>&nbsp;</p>
 
 
-Here we may keep pnns_groups_1 as product category feature. It contains less classes but better distributed. We see that the the most frequent class is the 'unknown' label.
+* Here we may keep pnns_groups_1 as product category feature
+  * It contains **less classes** and **better balanced** among samples
+  * We see that the the **most frequent class** is the **'unknown'** label
 
-We could transform this feature as binary 'food vs beverage' assuming that the nutrient quantities expected to be considered as healthy are not the same for food or beverages.
+* We could transform this feature as binary **'food vs beverage'** assuming that the **nutrient quantities** expected to be considered as healthy are not the same for food or beverages.
 
-Then we could try predict the missing labels by training a classifier.
+* Then we could try **predict** the missing labels by training a classifier.
 
 
 ![](Images/prod_binary.png)<p>&nbsp;</p>
 
-The labels are unbalanced here. A model should be evaluated on a metric that takes into account the disproporion here, such as f1_score. This metric gives insights about the predictions on minority classes and therefore the overall performance of the model.<p>&nbsp;</p>
+* The labels are **unbalanced** here
+
+* A model should be evaluated on a metric that takes into account the disproporion here, such as **f1_score** 
+
+* This **metric** gives insights about the predictions on **minority classes** and therefore the **overall performance of the model**.<p>&nbsp;</p>
 
 
 #### **Training a model**
@@ -191,9 +210,9 @@ The labels are unbalanced here. A model should be evaluated on a metric that tak
 ![](Images/knn_vs_dummy.png)<p>&nbsp;</p>
 
 
-The knn estimator performs much better on average than the Dummy Classifier on our test set, being more accurate at predicting the minority label ie 'beverages'.
+* The **knn** estimator **performs much better** on average than the **Dummy Classifier** on our test set, being more accurate at predicting the minority label ie 'beverages'
 
-We will therefore impute missing values with this model.<p>&nbsp;</p>
+* We will therefore **impute missing values** with this model<p>&nbsp;</p>
 
 
 #### **Control of the distributions**<p>&nbsp;</p>
@@ -202,7 +221,9 @@ We will therefore impute missing values with this model.<p>&nbsp;</p>
 ![](Images/dist_control.png)<p>&nbsp;</p>
 
 
-The distributions before and after imputation are pretty much the same and are consistent with the performance of our model. The idea here is to avoid introducing some bias in the distributions.
+* The distributions before and after imputation are pretty much the same and are consistent with the performance of our model
+
+* The idea here is to avoid introducing some bias in the distributions.
 
 
 **Fibers**
